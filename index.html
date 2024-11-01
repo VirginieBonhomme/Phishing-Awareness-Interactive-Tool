@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Phishing Awareness Game</title>
+  <style>
+    /* Base styles to reset margins and apply a consistent font */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    /* Body style with centered flex alignment */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f9f9f9;
+      color: #333333;
+    }
+
+    /* Main game container styling */
+    .container {
+      background-color: white;
+      width: 100%;
+      max-width: 600px;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #e0e0e0;
+    }
+
+    /* Header style with flex alignment for title and question counter */
+    header {
+      background-color: #1a1a2e;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.5em;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Question counter styling in header */
+    #question-count {
+      font-size: 1em;
+      font-weight: 400;
+      color: #009ffd;
+    }
+
+    /* Instructions box with padding and light background */
+    .instructions {
+      padding: 20px;
+      background-color: #f0f1f3;
+      color: #6e6e73;
+      border-bottom: 1px solid #e1e1e4;
+      text-align: center;
+      font-size: 0.9em;
+      line-height: 1.6;
+    }
+
+    /* Styling for the main game area where questions display */
+    #game-area {
+      padding: 20px;
+      text-align: left;
+      font-size: 1.1em;
+      color: #333333;
+    }
+
+    /* Subject style for the game area */
+    #game-area h2 {
+      font-size: 1.2em;
+      margin-bottom: 8px;
+      color: #1a1a2e;
+      font-weight: 500;
+    }
+
+    /* Horizontal line style for message separation */
+    #game-area hr {
+      border: none;
+      border-top: 1px solid #e1e1e4;
+      margin: 20px 0;
+    }
+
+    /* Control section for the buttons */
+    #controls {
+      display: flex;
+      justify-content: space-around;
+      padding: 20px;
+      background-color: #f0f1f3;
+    }
+
+    /* Button styling with rounded corners */
+    #controls button {
+      flex: 1;
+      max-width: 200px;
+      padding: 12px;
+      margin: 0 10px;
+      font-size: 1em;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    /* Phishing button specific styling */
+    #phishing-btn {
+      background-color: #ff4d4d;
+    }
+
+    /* Safe button specific styling */
+    #safe-btn {
+      background-color: #009ffd;
+    }
+
+    /* Feedback area with neutral color for displaying answers */
+    #feedback {
+      padding: 20px;
+      font-size: 1em;
+      text-align: center;
+      color: #333333;
+      background-color: #f9f9f9;
+      border-top: 1px solid #e1e1e4;
+      font-weight: 500;
+    }
+
+    /* Footer styling to show the score */
+    footer {
+      background-color: #1a1a2e;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 1em;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      Phishing Awareness Game
+      <div id="question-count">Question: 1 / 20</div>
+    </header>
+    <div class="instructions">
+      <p><strong>How to Play:</strong> Read each message below and decide if it’s a phishing attempt. Click "Report as Phishing" if you suspect it, or "Mark as Safe" if it seems legitimate.</p>
+    </div>
+    <div id="game-area">
+      <!-- The main game area where email messages will be displayed -->
+    </div>
+    <div id="controls">
+      <button id="phishing-btn">Report as Phishing</button>
+      <button id="safe-btn">Mark as Safe</button>
+    </div>
+    <div id="feedback">
+      <!-- Feedback messages will be shown here -->
+    </div>
+    <footer>
+      Score: <span id="score">0</span>
+    </footer>
+  </div>
+
+  <script>
+    // Array of 20 email messages with realistic phishing scenarios
+    const messages = [
+      { id: 1, sender: "security@paypa1.com", subject: "Account Compromised!", body: "Your PayPal account has been compromised. Please <a href='#' onclick='return false;'>click here</a> to secure it.", isPhishing: true, explanation: "PayPal’s official domain is 'paypal.com', not 'paypa1.com'." },
+      { id: 2, sender: "no-reply@googl.com", subject: "Google Account Alert", body: "Unusual activity detected. Secure your account <a href='#' onclick='return false;'>here</a>.", isPhishing: true, explanation: "'googl.com' is not a legitimate Google domain." },
+      { id: 3, sender: "noreply@amazon-supports.com", subject: "Order Delayed", body: "We need your confirmation to proceed with your order. <a href='#' onclick='return false;'>Confirm now</a>.", isPhishing: true, explanation: "Amazon's official domain is 'amazon.com', not 'amazon-supports.com'." },
+      { id: 4, sender: "hr@trustedcompany.com", subject: "Annual Benefits Enrollment", body: "It’s time to enroll in benefits for next year. Please log in through our HR portal.", isPhishing: false, explanation: "This is a common HR email with no suspicious links." },
+      { id: 5, sender: "security@microsoft-security.com", subject: "Security Alert", body: "We detected a login attempt from an unrecognized device. <a href='#' onclick='return false;'>Check activity</a>.", isPhishing: true, explanation: "Microsoft typically sends alerts from 'microsoft.com', not 'microsoft-security.com'." },
+      { id: 6, sender: "support@apple-id.com", subject: "Apple ID Login Attempt", body: "Did you attempt to sign in? <a href='#' onclick='return false;'>Review your account</a>.", isPhishing: true, explanation: "Apple’s emails come from 'apple.com', not 'apple-id.com'." },
+      { id: 7, sender: "contact@yourbank-secure.com", subject: "Account Locked", body: "Your account has been locked due to multiple login attempts. <a href='#' onclick='return false;'>Unlock now</a>.", isPhishing: true, explanation: "Banks don’t use 'yourbank-secure.com' as their domain." },
+      { id: 8, sender: "update@apple.com", subject: "Software Update Required", body: "A software update is available. Please update at your convenience.", isPhishing: false, explanation: "Legitimate software updates are often sent from official sources." },
+      { id: 9, sender: "service@paypal.co", subject: "Payment Declined", body: "A recent transaction was declined. <a href='#' onclick='return false;'>View details</a>.", isPhishing: true, explanation: "'paypal.co' is not an official PayPal domain." },
+      { id: 10, sender: "customer-care@netflixbilling.com", subject: "Payment Failure", body: "Your Netflix payment failed. <a href='#' onclick='return false;'>Update payment info</a>.", isPhishing: true, explanation: "'netflixbilling.com' is not an official Netflix domain." },
+      { id: 11, sender: "security@yourbank.com", subject: "Fraud Alert", body: "Please confirm a recent transaction to prevent fraud. Contact your bank directly if needed.", isPhishing: false, explanation: "This is a typical fraud alert without suspicious links." },
+      { id: 12, sender: "admin@school-edu.com", subject: "New School Policies", body: "Please read our updated school policies.", isPhishing: false, explanation: "Legitimate academic announcements from 'school.edu'." },
+      { id: 13, sender: "alert@paypal-secure.com", subject: "PayPal Login Attempt", body: "If this wasn’t you, please <a href='#' onclick='return false;'>secure your account</a>.", isPhishing: true, explanation: "'paypal-secure.com' is a spoofed domain." },
+      { id: 14, sender: "alerts@amazon-security.com", subject: "Suspicious Order Activity", body: "Verify your recent orders to confirm no fraudulent purchases. <a href='#' onclick='return false;'>Check orders</a>.", isPhishing: true, explanation: "Amazon’s emails do not come from 'amazon-security.com'." },
+      { id: 15, sender: "team@slack-messages.com", subject: "New Message Received", body: "You have a new message. <a href='#' onclick='return false;'>View it now</a>.", isPhishing: true, explanation: "'slack-messages.com' is not an official Slack domain." },
+      { id: 16, sender: "updates@bank-secure.com", subject: "Immediate Account Verification Needed", body: "Please verify your details within 24 hours to avoid suspension.", isPhishing: true, explanation: "Banks use official domains, not 'bank-secure.com'." },
+      { id: 17, sender: "info@paypall.com", subject: "Unauthorized Access", body: "An unauthorized login attempt was detected. <a href='#' onclick='return false;'>Secure your account</a>.", isPhishing: true, explanation: "The sender’s email domain 'paypall.com' is a spoof of 'paypal.com'." },
+      { id: 18, sender: "no-reply@amazon-customers.com", subject: "Order Confirmation Needed", body: "Please confirm your recent purchase to proceed.", isPhishing: true, explanation: "Amazon’s emails come from 'amazon.com' only." },
+      { id: 19, sender: "it-admin@corporate-secure.com", subject: "VPN Update Required", body: "Please update your VPN software to continue secure access.", isPhishing: true, explanation: "IT notifications would use the company’s official domain." },
+      { id: 20, sender: "no-reply@company.com", subject: "End of Year Benefits Review", body: "Time to review benefits. Please visit our official HR portal.", isPhishing: false, explanation: "This is a standard benefits reminder from the company’s official email." },
+    ];
+
+    // Shuffle the messages array in place using Fisher-Yates algorithm
+    function shuffleMessages(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    // Call the shuffle function to randomize messages on each refresh
+    shuffleMessages(messages);
+
+    let currentMessageIndex = 0;  // Tracks the current question index
+    let score = 0;  // Tracks the user's score
+
+    // Get references to HTML elements
+    const gameArea = document.getElementById('game-area');
+    const phishingBtn = document.getElementById('phishing-btn');
+    const safeBtn = document.getElementById('safe-btn');
+    const feedbackDiv = document.getElementById('feedback');
+    const scoreSpan = document.getElementById('score');
+    const questionCount = document.getElementById('question-count');
+
+    // Display the current question in the game area
+    function displayMessage() {
+      const message = messages[currentMessageIndex];
+      gameArea.innerHTML = `
+        <h2>${message.subject}</h2>
+        <p><strong>From:</strong> ${message.sender}</p>
+        <hr>
+        <p>${message.body}</p>
+      `;
+      feedbackDiv.textContent = '';  // Clear feedback for new question
+      questionCount.textContent = `Question: ${currentMessageIndex + 1} / ${messages.length}`;
+    }
+
+    // Update the score and display feedback based on correctness
+    function updateScore(isCorrect) {
+      const message = messages[currentMessageIndex];
+      if (isCorrect) {
+        score += 10;
+        feedbackDiv.innerHTML = `<p class="correct">Correct! ${message.explanation}</p>`;
+      } else {
+        score -= 5;
+        feedbackDiv.innerHTML = `<p class="incorrect">Incorrect. ${message.explanation}</p>`;
+      }
+      scoreSpan.textContent = score;  // Update the displayed score
+    }
+
+    // Move to the next message or end the game
+    function nextMessage() {
+      currentMessageIndex++;
+      if (currentMessageIndex < messages.length) {
+        setTimeout(() => {
+          displayMessage();
+        }, 2000);
+      } else {
+        setTimeout(() => {
+          endGame();
+        }, 2000);
+      }
+    }
+
+    // End the game, display the final score and a feedback message
+    function endGame() {
+      const grade = Math.max(0, (score / (messages.length * 10)) * 100).toFixed(0);  // Calculate percentage grade
+      let message = '';
+
+      // Select feedback message based on score
+      if (grade >= 90) {
+        message = "Excellent work! 🏆 You're a cybersecurity star! Keep up the amazing work.";
+      } else if (grade >= 70) {
+        message = "Good job! 🌟 You're well on your way to becoming a phishing pro. Just a bit more practice!";
+      } else if (grade >= 50) {
+        message = "Almost there! 📚 You’ve got the basics down, but a little more training will make you a pro.";
+      } else {
+        message = "Keep going! 🚀 Phishing emails can be tricky, so try again and keep building those skills!";
+      }
+
+      gameArea.innerHTML = `<h2>Game Over</h2><p>Your final grade is ${grade}/100.</p><p>${message}</p>`;
+      phishingBtn.disabled = true;  // Disable buttons after the game ends
+      safeBtn.disabled = true;
+      feedbackDiv.innerHTML = '';  // Clear feedback display
+    }
+
+    // Button event listeners for answering phishing/safe
+    phishingBtn.addEventListener('click', () => {
+      const message = messages[currentMessageIndex];
+      updateScore(message.isPhishing);  // Check if the answer is correct
+      nextMessage();  // Move to the next question
+    });
+
+    safeBtn.addEventListener('click', () => {
+      const message = messages[currentMessageIndex];
+      updateScore(!message.isPhishing);  // Check if the answer is correct
+      nextMessage();  // Move to the next question
+    });
+
+    // Start the game by displaying the first message
+    displayMessage();
+  </script>
+</body>
+</html>
