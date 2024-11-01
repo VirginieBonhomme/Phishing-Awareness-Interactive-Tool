@@ -12,6 +12,6 @@ I developed an interactive web tool designed to help employees recognize phishin
 
 To start the lab, click on the link below:
 
-[Start the Phishing Awareness Lab](https://virginiebonhomme.github.io/Phishing-Lab/)
+[Start the Phishing Awareness Lab](https://virginiebonhomme.github.io/Phishing-Awareness-Interactive-Tool/)
 
 ![Phishing Awareness_](https://github.com/user-attachments/assets/36274bd3-32a5-4e6c-8882-958ead6a8565)
