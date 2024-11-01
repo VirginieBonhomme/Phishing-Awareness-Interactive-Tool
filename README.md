@@ -9,4 +9,9 @@ I developed an interactive web tool designed to help employees recognize phishin
 - **Immediate Feedback**: After each response, users receive feedback to learn from incorrect answers.
 - **Educational Summary**: At the end of the tool, users receive a summary that reinforces what to look for in phishing attempts.
 
-This project exemplifies my commitment to enhancing cybersecurity through education, using user-friendly interfaces to train employees in recognizing and avoiding common threats.
+
+To start the lab, click on the link below:
+
+[Start the Phishing Awareness Lab](https://virginiebonhomme.github.io/Phishing-Lab/)
+
+![Phishing Awareness_](https://github.com/user-attachments/assets/36274bd3-32a5-4e6c-8882-958ead6a8565)
