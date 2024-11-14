@@ -7,7 +7,6 @@ I developed an interactive web tool designed to help employees recognize phishin
 - **Simulated Email Messages**: Realistic email messages that include both legitimate and phishing scenarios.
 - **Interactive Decision-Making**: Users engage by selecting "Report as Phishing" or "Mark as Safe" for each message.
 - **Immediate Feedback**: After each response, users receive feedback to learn from incorrect answers.
-- **Educational Summary**: At the end of the tool, users receive a summary that reinforces what to look for in phishing attempts.
 
 
 To start the lab, click on the link below:
